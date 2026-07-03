@@ -209,8 +209,8 @@ export function ReefChatbot() {
 const styles = {
   fab: {
     position:       'fixed',
-    bottom:         24,
-    right:          24,
+    bottom:         16,
+    right:          16,
     zIndex:         9999,
     width:          56,
     height:         56,
@@ -227,11 +227,13 @@ const styles = {
   },
   window: {
     position:       'fixed',
-    bottom:         24,
-    right:          24,
+    bottom:         16,
+    right:          16,
     zIndex:         9999,
-    width:          360,
-    height:         480,
+    width:          'calc(100vw - 32px)',
+    maxWidth:       360,
+    height:         'calc(100dvh - 32px)', // dvh respects mobile browser UI and keyboards
+    maxHeight:      480,
     background:     'var(--d2)',          // card bg — white in light, #0a1628 in dark
     border:         '1px solid #00b4d8',
     borderRadius:   16,
