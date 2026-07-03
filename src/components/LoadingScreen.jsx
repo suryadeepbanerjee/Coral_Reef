@@ -235,11 +235,11 @@ export function LoadingScreen({ onDone }) {
         ))}
 
         {/* ── Content — no bg/border, floats in space ── */}
-        <div style={{position:'relative',zIndex:2,display:'flex',flexDirection:'column',alignItems:'center',gap:28,width:'100%',maxWidth:480}}>
+        <div style={{position:'relative',zIndex:2,display:'flex',flexDirection:'column',alignItems:'center',gap:28,width:'100%',maxWidth:420,padding:'0 16px'}}>
 
           {/* SVG Reef Scene */}
-          <div style={{width:420,height:220,position:'relative',overflow:'hidden'}}>
-            <svg width="420" height="220" viewBox="0 0 420 220" style={{position:'absolute',inset:0}}>
+          <div style={{width:'100%',aspectRatio:'420/220',position:'relative',overflow:'hidden'}}>
+            <svg width="100%" height="100%" viewBox="0 0 420 220" style={{position:'absolute',inset:0}}>
               <defs>
                 <linearGradient id="lsFloor" x1="0" y1="0" x2="0" y2="1">
                   <stop offset="0%" stopColor="#1a3a4a"/><stop offset="100%" stopColor="#0d2535"/>
@@ -358,8 +358,8 @@ export function LoadingScreen({ onDone }) {
           </div>
 
           {/* Title + status */}
-          <div style={{textAlign:'center',width:420}}>
-            <div style={{fontSize:22,fontWeight:700,color:'#fff',letterSpacing:'2.5px',
+          <div style={{textAlign:'center',width:'100%'}}>
+            <div style={{fontSize:20,fontWeight:700,color:'#fff',letterSpacing:'1.5px',
               textTransform:'uppercase',fontFamily:'Inter,system-ui,sans-serif',marginBottom:8}}>
               🪸 Coral Reef Dashboard
             </div>
@@ -370,7 +370,7 @@ export function LoadingScreen({ onDone }) {
           </div>
 
           {/* Progress bar */}
-          <div style={{width:420}}>
+          <div style={{width:'100%'}}>
             <div style={{height:12,background:'rgba(255,255,255,0.07)',borderRadius:999,
               border:'1px solid rgba(0,180,216,0.2)',overflow:'hidden'}}>
               <div style={{

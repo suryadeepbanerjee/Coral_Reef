@@ -262,11 +262,11 @@ export function PredictionPanel() {
       {/* ── SIMULATION — full width below both columns, only after prediction */}
       {result && (
         <div className="mt-6 border-t pt-6" style={{ borderColor: 'var(--bd)' }}>
-          <div className="flex items-center justify-between mb-4">
-            <p className="text-sm font-semibold uppercase tracking-wider" style={{ color: 'var(--tx2)' }}>
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 gap-4">
+            <p className="text-sm font-semibold uppercase tracking-wider text-center sm:text-left" style={{ color: 'var(--tx2)' }}>
               📈 Climate Scenario Simulation — 10-Year Projection
             </p>
-            <div className="flex gap-2">
+            <div className="flex flex-wrap justify-center sm:justify-end gap-2">
               {[
                 { key: 'optimistic', label: '🌿 Optimistic',  col: '#2ecc71' },
                 { key: 'status_quo', label: '📊 Status Quo',  col: '#f39c12' },
@@ -275,7 +275,7 @@ export function PredictionPanel() {
                 <button key={btn.key}
                   onClick={() => handleSimulate(btn.key)}
                   disabled={simLoading}
-                  className="py-2 px-5 rounded-lg text-xs font-semibold transition-all border disabled:opacity-50"
+                  className="flex-1 sm:flex-none py-2 px-3 sm:px-5 rounded-lg text-xs font-semibold transition-all border disabled:opacity-50 text-center"
                   style={{
                     background:   simScenario === btn.key && simResult ? `${btn.col}22` : 'var(--d3)',
                     borderColor:  simScenario === btn.key && simResult ? btn.col : 'var(--bd)',
@@ -293,10 +293,10 @@ export function PredictionPanel() {
                 {simScenario === 'optimistic' ? '🌿 Optimistic' : simScenario === 'worst_case' ? '🔥 Worst Case' : '📊 Status Quo'} — 10-Year Projection
               </p>
               <ResponsiveContainer width="100%" height={240}>
-                <LineChart data={simResult} margin={{ top: 5, right: 20, left: -10, bottom: 5 }}>
+                <LineChart data={simResult} margin={{ top: 5, right: 10, left: -20, bottom: 5 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="var(--bd)" />
-                  <XAxis dataKey="Year" tick={{ fontSize: 11, fill: 'var(--tx2)' }} />
-                  <YAxis domain={[0, 100]} tick={{ fontSize: 11, fill: 'var(--tx2)' }} unit="%" />
+                  <XAxis dataKey="Year" tick={{ fontSize: 10, fill: 'var(--tx2)' }} />
+                  <YAxis domain={[0, 100]} tick={{ fontSize: 10, fill: 'var(--tx2)' }} unit="%" />
                   <Tooltip
                     contentStyle={{ background: 'var(--d2)', border: '1px solid var(--bd)', borderRadius: 8, fontSize: 12 }}
                     labelStyle={{ color: 'var(--tx1)' }}

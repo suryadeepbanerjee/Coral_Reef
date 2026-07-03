@@ -25,12 +25,12 @@ export function TempScatterChart({ data, trendLine, loading }) {
   }, [data, trendLine]);
 
   return (
-    <div className="rounded-xl p-6 border transition-all"
-         style={{ height: 480, background: 'var(--d2)', borderColor: 'var(--bd)' }}>
+    <div className="rounded-xl p-4 sm:p-6 border transition-all h-[420px] sm:h-[480px]"
+         style={{ background: 'var(--d2)', borderColor: 'var(--bd)' }}>
       <h3 className="font-semibold mb-4" style={{ color: 'var(--tx1)' }}>🌡️ Temperature vs Bleaching %</h3>
       {loading ? <div className="w-full h-80 rounded animate-pulse" style={{ background: 'var(--d3)' }} /> : (
-        <ResponsiveContainer width="100%" height={400}>
-          <ScatterChart margin={{ top: 5, right: 20, left: -20, bottom: 5 }}>
+        <ResponsiveContainer width="100%" height="90%">
+          <ScatterChart margin={{ top: 5, right: 10, left: -25, bottom: 5 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="var(--gd)" />
             <XAxis dataKey="temp" type="number" stroke="var(--ax)" tick={{ fill: 'var(--tl)', fontSize: 11 }} />
             <YAxis dataKey="bleaching" type="number" stroke="var(--ax)" tick={{ fill: 'var(--tl)', fontSize: 11 }} unit="%" />
