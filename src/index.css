@@ -1,0 +1,57 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Theme CSS variables ─────────────────────── */
+:root {
+  --d1: #f8fafc;
+  --d2: #ffffff;
+  --d3: #f1f5f9;
+  --bd: #e2e8f0;
+  --tx1: #0f172a;
+  --tx2: #475569;
+  --ax: #64748b;
+  --gd: #e2e8f0;
+  --tl: #64748b;
+}
+
+html.dark {
+  --d1: #050f1e;
+  --d2: #0a1628;
+  --d3: #0d1f3c;
+  --bd: #1e3a5f;
+  --tx1: #ffffff;
+  --tx2: #94a3b8;
+  --ax: #4a6fa5;
+  --gd: #1e3a5f;
+  --tl: #94a3b8;
+}
+
+body {
+  background-color: var(--d1);
+  color: var(--tx1);
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+/* ── Leaflet ─────────────────────────────────── */
+.leaflet-container {
+  width: 100%;
+  height: 100%;
+  border-radius: 0.75rem;
+}
+
+/* ── Scrollbar ───────────────────────────────── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--d3); }
+::-webkit-scrollbar-thumb { background: var(--bd); border-radius: 3px; }
+
+/* ── Range slider ────────────────────────────── */
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  background: #00b4d8;
+  cursor: pointer;
+  border: 2px solid var(--d2);
+  box-shadow: 0 0 0 2px #00b4d8;
+}

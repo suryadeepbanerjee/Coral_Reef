@@ -1,0 +1,4 @@
+# This file keeps the model_files/ folder tracked in git.
+# The actual .pkl model files are excluded by .gitignore (too large for GitHub).
+# On Render, upload coral_model.pkl, scaler.pkl, and features.pkl
+# to this folder manually via the Render dashboard or a build script.

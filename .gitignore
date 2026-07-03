@@ -1,0 +1,50 @@
+# ── Environment variables — NEVER push these ─────────────────────────────────
+.env
+.env.local
+.env.production
+.env.development
+.env.*.local
+
+# ── Python ────────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pkl
+*.h5
+*.onnx
+backend/__pycache__/
+backend/model_files/*.pkl
+backend/model_files/*.h5
+backend/model_files/*.onnx
+venv/
+.venv/
+
+# ── Node ──────────────────────────────────────────────────────────────────────
+node_modules/
+dist/
+dist-ssr/
+build/
+.vite/
+.pnp
+.pnp.js
+
+# ── Logs ──────────────────────────────────────────────────────────────────────
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ── Editor ────────────────────────────────────────────────────────────────────
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# ── OS ────────────────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
