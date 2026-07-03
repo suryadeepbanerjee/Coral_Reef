@@ -235,7 +235,8 @@ export function LoadingScreen({ onDone }) {
         ))}
 
         {/* ── Content — no bg/border, floats in space ── */}
-        <div style={{position:'relative',zIndex:2,display:'flex',flexDirection:'column',alignItems:'center',gap:28,width:'100%',maxWidth:420,padding:'0 16px',transform:'translateY(-12vh)'}}>
+        <div className="-translate-y-[12vh] md:translate-y-0 transition-transform" 
+             style={{position:'relative',zIndex:2,display:'flex',flexDirection:'column',alignItems:'center',gap:28,width:'100%',maxWidth:420,padding:'0 16px'}}>
 
           {/* SVG Reef Scene */}
           <div style={{width:'100%',aspectRatio:'420/220',position:'relative',overflow:'hidden'}}>
