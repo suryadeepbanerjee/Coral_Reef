@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Analytics } from '@vercel/analytics/react';
 import { useCSVData } from './hooks/useCSVData';
 import { Header }           from './components/Header';
 import { MetricCards }      from './components/MetricCards';
@@ -177,6 +178,7 @@ export default function App() {
         not the viewport). Rendering outside fixes this permanently.
       */}
       <ReefChatbot />
+      <Analytics />
     </>
   );
 }
