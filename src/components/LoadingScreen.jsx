@@ -39,15 +39,26 @@ const AMBIENT = [
   {x:'78%', y:'105%',s:3,  op:0.18, d:'10s', dl:'1.3s' },
 ];
 
-export function LoadingScreen({ onDone }) {
+export function LoadingScreen({ onDone, dataReady = true }) {
   const [pct,        setPct]        = useState(0);
   const [exiting,    setExiting]    = useState(false);
   const [displayMsg, setDisplayMsg] = useState(MESSAGES[0].text);
   const [msgOpacity, setMsgOpacity] = useState(1);
 
-  // Stable ref so RAF closure always calls the current onDone
-  const onDoneRef  = useRef(onDone);
+  // Stable refs so RAF/timeout closures always read the latest values
+  const onDoneRef     = useRef(onDone);
+  const dataReadyRef  = useRef(dataReady);
   useEffect(() => { onDoneRef.current = onDone; }, [onDone]);
+  // When dataReady flips true, update the ref — the poll will pick it up
+  useEffect(() => { dataReadyRef.current = dataReady; }, [dataReady]);
+
+  // While bar is full but CSV still loading, show a waiting message
+  useEffect(() => {
+    if (!dataReady && pct >= 100) {
+      setDisplayMsg('Preparing dashboard data…');
+      setMsgOpacity(1);
+    }
+  }, [dataReady, pct]);
 
   const msgRef     = useRef(MESSAGES[0].text);
   const msgTimRef  = useRef(null);
@@ -65,10 +76,12 @@ export function LoadingScreen({ onDone }) {
   };
 
   useEffect(() => {
-    let cancelled = false;
-    let raf       = null;
+    let cancelled    = false;
+    let raf          = null;
+    let poll         = null;          // hoisted — cleaned up in return
+    let dataFallback = null;          // hoisted — cleaned up in return
 
-    // ── Real tasks (parallel, non-blocking) ──────────────────────────────────
+    // ── Real tasks (parallel, non-blocking) ───────────────────────────────────────────
     let tasksDone = false;
     (async () => {
       try {
@@ -80,30 +93,26 @@ export function LoadingScreen({ onDone }) {
       tasksDone = true;
     })();
 
-    // ── Guard: if tasks are somehow never resolved, force-complete after 2s ──
+    // ── Guard: if tasks never resolve, force-complete after 2 s ───────────────
     const taskFallback = setTimeout(() => { tasksDone = true; }, 2000);
 
-    // ── Both-done gate ────────────────────────────────────────────────────────
-    let barDone      = false;
-    let diveStarted  = false;
+    // ── Three-gate exit ───────────────────────────────────────────────────────
+    let barDone     = false;
+    let diveStarted = false;
 
     const tryFinish = () => {
-      if (barDone && tasksDone && !diveStarted && !cancelled) {
+      // bar animation ✅ + health check ✅ + CSV data ready ✅
+      if (barDone && tasksDone && dataReadyRef.current && !diveStarted && !cancelled) {
         diveStarted = true;
-        // Show "Dive in!" for 450ms, then trigger exit from INSIDE the component
-        // (avoids stale-closure / prop-propagation-timing issues)
         setTimeout(() => {
           if (cancelled) return;
-          setExiting(true);           // loader fades out (opacity→0, scale→1.03, blur)
-          // Unmount after exit animation completes
-          setTimeout(() => {
-            if (!cancelled) onDoneRef.current();
-          }, 420);
+          setExiting(true);
+          setTimeout(() => { if (!cancelled) onDoneRef.current(); }, 420);
         }, 450);
       }
     };
 
-    // ── RAF progress loop ─────────────────────────────────────────────────────
+    // ── RAF progress loop ────────────────────────────────────────────────────────
     const startTime = performance.now();
 
     const tick = (now) => {
@@ -116,19 +125,26 @@ export function LoadingScreen({ onDone }) {
       updateMsg(rounded);
 
       if (raw >= 100) {
-        setPct(100);          // explicit final set — no floating-point ambiguity
+        setPct(100);
         barDone = true;
         tryFinish();
-        // Keep polling tasksDone until it resolves (in case tasks > bar duration)
-        if (!tasksDone) {
-          const poll = setInterval(() => {
-            if (tasksDone || cancelled) {
-              clearInterval(poll);
-              tryFinish();
-            }
-          }, 80);
-        }
-        return;               // stop RAF
+
+        // Poll until ALL three gates pass (every 80 ms)
+        poll = setInterval(() => {
+          if (cancelled) { clearInterval(poll); return; }
+          if (tasksDone && dataReadyRef.current) {
+            clearInterval(poll);
+            tryFinish();
+          }
+        }, 80);
+
+        // Hard cap: don't wait more than 7 s for dataReady
+        dataFallback = setTimeout(() => {
+          dataReadyRef.current = true;
+          tryFinish();
+        }, 7000);
+
+        return;   // stop RAF
       }
 
       raf = requestAnimationFrame(tick);

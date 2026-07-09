@@ -41,20 +41,12 @@ function Divider() {
 }
 
 export default function App() {
-  // ── Loader gate: stays true until BOTH animation finishes AND CSV is ready ──
-  const [loaderAnimDone,  setLoaderAnimDone]  = useState(false);
-  const [maxWaitExpired,  setMaxWaitExpired]  = useState(false);
-
-  // Hard cap — if CSV takes longer than 10 s, reveal anyway
-  useEffect(() => {
-    const t = setTimeout(() => setMaxWaitExpired(true), 10000);
-    return () => clearTimeout(t);
-  }, []);
+  const [isLoading, setIsLoading] = useState(true);
 
   // Selected zone for live metric cards
   const [selectedZone, setSelectedZone] = useState(TRACKED_ZONES[0]);
 
-  const handleLoaderDone = () => setLoaderAnimDone(true);
+  const handleLoaderDone = () => setIsLoading(false);
 
   // ── Data hooks — start fetching immediately (even while loader shows) ────
   const {
@@ -72,9 +64,6 @@ export default function App() {
 
   // ── User location detection ───────────────────────────────────────────────
   const { location, locationStatus } = useLocation();
-
-  // Gate: hold loader until animation done AND CSV ready (or hard cap hit)
-  const isLoading = !loaderAnimDone || (csvLoading && !maxWaitExpired);
   // ── Scroll lock while loader active ─────────────────────────────────────────
   useEffect(() => {
     if (isLoading) {
@@ -148,7 +137,7 @@ export default function App() {
 
   return (
     <>
-      {isLoading && <LoadingScreen onDone={handleLoaderDone} />}
+      {isLoading && <LoadingScreen onDone={handleLoaderDone} dataReady={!csvLoading} />}
 
       {/* Dashboard — always mounted underneath the loader overlay. */}
       <div
