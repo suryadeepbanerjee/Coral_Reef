@@ -41,13 +41,40 @@ function Divider() {
 }
 
 export default function App() {
-  const [isLoading, setIsLoading] = useState(true);
+  // ── Loader gate: stays true until BOTH animation finishes AND CSV is ready ──
+  const [loaderAnimDone,  setLoaderAnimDone]  = useState(false);
+  const [maxWaitExpired,  setMaxWaitExpired]  = useState(false);
+
+  // Hard cap — if CSV takes longer than 10 s, reveal anyway
+  useEffect(() => {
+    const t = setTimeout(() => setMaxWaitExpired(true), 10000);
+    return () => clearTimeout(t);
+  }, []);
 
   // Selected zone for live metric cards
   const [selectedZone, setSelectedZone] = useState(TRACKED_ZONES[0]);
 
-  const handleLoaderDone = () => setIsLoading(false);
+  const handleLoaderDone = () => setLoaderAnimDone(true);
 
+  // ── Data hooks — start fetching immediately (even while loader shows) ────
+  const {
+    loading: csvLoading, error,
+    yearlyTrend, oceanStats, countryStats,
+    mapPoints,
+    worstYear, worstOcean,
+    totalRecords, avgBleaching,
+    tempVsBleaching, sstaVsBleaching,
+    trendLine, sstaTrendLine,
+  } = useCSVData();
+
+  // ── Live NOAA satellite data ──────────────────────────────────────────────
+  const { liveData, liveStatus, fetchedAt, zonesFailed } = useLiveData();
+
+  // ── User location detection ───────────────────────────────────────────────
+  const { location, locationStatus } = useLocation();
+
+  // Gate: hold loader until animation done AND CSV ready (or hard cap hit)
+  const isLoading = !loaderAnimDone || (csvLoading && !maxWaitExpired);
   // ── Scroll lock while loader active ─────────────────────────────────────────
   useEffect(() => {
     if (isLoading) {
@@ -93,21 +120,6 @@ export default function App() {
     };
   }, [isLoading]);
 
-  const {
-    loading, error,
-    yearlyTrend, oceanStats, countryStats,
-    mapPoints,
-    worstYear, worstOcean,
-    totalRecords, avgBleaching,
-    tempVsBleaching, sstaVsBleaching,
-    trendLine, sstaTrendLine,
-  } = useCSVData();
-
-  // ── Live NOAA satellite data ──────────────────────────────────────────────
-  const { liveData, liveStatus, fetchedAt, zonesFailed } = useLiveData();
-
-  // ── User location detection ───────────────────────────────────────────────
-  const { location, locationStatus } = useLocation();
 
   // Auto-select nearest reef zone ONCE when location resolves.
   // hasAutoSelected prevents overriding a manual user selection afterwards.
@@ -209,7 +221,7 @@ export default function App() {
           <MetricCards
             totalRecords={totalRecords} avgBleaching={avgBleaching}
             worstYear={worstYear}       worstOcean={worstOcean}
-            loading={loading}
+            loading={csvLoading}
             liveData={liveData}
             liveStatus={liveStatus}
             selectedZone={selectedZone}
@@ -224,8 +236,8 @@ export default function App() {
           {/* SECTION 3 — Charts Row 1 */}
           <SectionTitle>Historical Bleaching Trends</SectionTitle>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-            <YearlyTrendChart data={yearlyTrend} loading={loading} />
-            <OceanZoneChart   data={oceanStats}  loading={loading} />
+            <YearlyTrendChart data={yearlyTrend} loading={csvLoading} />
+            <OceanZoneChart   data={oceanStats}  loading={csvLoading} />
           </div>
 
           <Divider />
@@ -233,13 +245,13 @@ export default function App() {
           {/* SECTION 4 — Charts Row 2 */}
           <SectionTitle>Geographic &amp; Environmental Analysis</SectionTitle>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-            <CountryChart     data={countryStats}    loading={loading} />
-            <TempScatterChart data={tempVsBleaching} trendLine={trendLine}     loading={loading} />
+            <CountryChart     data={countryStats}    loading={csvLoading} />
+            <TempScatterChart data={tempVsBleaching} trendLine={trendLine}     loading={csvLoading} />
           </div>
 
           {/* SECTION 4b — SSTA Scatter */}
           <div className="mb-8">
-            <SSTAScatterChart data={sstaVsBleaching} trendLine={sstaTrendLine} loading={loading} />
+            <SSTAScatterChart data={sstaVsBleaching} trendLine={sstaTrendLine} loading={csvLoading} />
           </div>
 
           <Divider />
@@ -249,7 +261,7 @@ export default function App() {
           <div className="mb-8">
             <ReefMap
               points={mapPoints}
-              loading={loading}
+              loading={csvLoading}
               liveData={liveData}
               fetchedAt={fetchedAt}
               location={location}
