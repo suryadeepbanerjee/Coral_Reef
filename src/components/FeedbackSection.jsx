@@ -82,8 +82,10 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const MAX_MSG  = 500;
 
 // ── Fetch IP + location (background, non-blocking) ──────────────────────────
+// Only uses ipapi.co (free, no key). If it fails, metadata is stored as
+// 'unknown' — this is fine for analytics. ipgeolocation.io is intentionally
+// NOT used here to avoid burning paid credits on every page load.
 async function fetchMeta() {
-  // Step 1 — ipapi.co (IP + location in one free call)
   try {
     const r = await fetch('https://ipapi.co/json/', { signal: AbortSignal.timeout(6000) });
     if (r.ok) {
@@ -96,24 +98,6 @@ async function fetchMeta() {
       }
     }
   } catch { /* silent */ }
-
-  // Step 2 — ipgeolocation.io (uses existing VITE_IPGEO_KEY if configured)
-  const geoKey = import.meta.env.VITE_IPGEO_KEY;
-  if (geoKey) {
-    try {
-      const r = await fetch(
-        `https://api.ipgeolocation.io/v3/ipgeo?apiKey=${geoKey}`,
-        { signal: AbortSignal.timeout(6000) }
-      );
-      if (r.ok) {
-        const d = await r.json();
-        return {
-          ip:       d.ip       || 'unknown',
-          location: [d.city, d.state_prov, d.country_name].filter(Boolean).join(', ') || 'Unknown',
-        };
-      }
-    } catch { /* silent */ }
-  }
 
   return { ip: 'unknown', location: 'Unknown' };
 }

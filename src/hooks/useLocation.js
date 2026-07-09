@@ -141,6 +141,8 @@ function getDefaultFallback() {
 }
 
 // ── Main hook ─────────────────────────────────────────────────────────────────
+const SESSION_KEY = 'reef_location_cache';
+
 export function useLocation() {
   const [location,       setLocation]       = useState(null);
   const [locationStatus, setLocationStatus] = useState('detecting');
@@ -148,6 +150,19 @@ export function useLocation() {
 
   useEffect(() => {
     let cancelled = false;
+
+    // ── Return cached result from this browser session immediately ─────────
+    try {
+      const cached = sessionStorage.getItem(SESSION_KEY);
+      if (cached) {
+        const { result, status } = JSON.parse(cached);
+        if (!cancelled) {
+          setLocation(result);
+          setLocationStatus(status);
+        }
+        return;  // ← no API calls at all
+      }
+    } catch { /* ignore sessionStorage errors */ }
 
     async function detect() {
       setLocationStatus('detecting');
@@ -157,6 +172,7 @@ export function useLocation() {
       if (result && !cancelled) {
         setLocation(result);
         setLocationStatus('confirmed');
+        try { sessionStorage.setItem(SESSION_KEY, JSON.stringify({ result, status: 'confirmed' })); } catch {}
         return;
       }
 
@@ -165,21 +181,25 @@ export function useLocation() {
       if (result && !cancelled) {
         setLocation(result);
         setLocationStatus('approximate');
+        try { sessionStorage.setItem(SESSION_KEY, JSON.stringify({ result, status: 'approximate' })); } catch {}
         return;
       }
 
-      // Step 3 — ipgeolocation.io
+      // Step 3 — ipgeolocation.io (only if ipapi.co fully unavailable)
       result = await tryIpGeolocation();
       if (result && !cancelled) {
         setLocation(result);
         setLocationStatus('approximate');
+        try { sessionStorage.setItem(SESSION_KEY, JSON.stringify({ result, status: 'approximate' })); } catch {}
         return;
       }
 
       // Step 4 — Default (no location, no zone auto-select)
       if (!cancelled) {
-        setLocation(getDefaultFallback());
+        const fallback = getDefaultFallback();
+        setLocation(fallback);
         setLocationStatus('unavailable');
+        // Don't cache unavailable — let next reload retry
       }
     }
 
