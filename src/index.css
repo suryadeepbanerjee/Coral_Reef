@@ -2,15 +2,49 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ── Font families ───────────────────────────────
-   --font-title    → Nunito    (≈ Pluto)
-   --font-heading  → Barlow    (≈ Graublau Sans Pro)
-   --font-body     → Sora      (≈ Sofia Pro)
-   ─────────────────────────────────────────────── */
+/* ── JetBrains Mono — digits only (unicode-range technique) ─────────────────
+   Loading JetBrains Mono with a restricted unicode-range means the browser
+   uses it ONLY for digit glyphs (0–9, ., ,, +, -, %) — all other characters
+   fall through to the next font in the stack automatically.
+   No class changes needed — works everywhere on the site.
+   ──────────────────────────────────────────────────────────────────────────── */
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style:  normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/jetbrainsmono/v24/tDbY2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKxjPQ.ttf) format('truetype');
+  unicode-range: U+0030-0039, U+002E, U+002C, U+002B, U+002D, U+0025, U+002F;
+}
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style:  normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/jetbrainsmono/v24/tDbY2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8-qxjPQ.ttf) format('truetype');
+  unicode-range: U+0030-0039, U+002E, U+002C, U+002B, U+002D, U+0025, U+002F;
+}
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style:  normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/jetbrainsmono/v24/tDbY2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8FqtjPQ.ttf) format('truetype');
+  unicode-range: U+0030-0039, U+002E, U+002C, U+002B, U+002D, U+0025, U+002F;
+}
+
+/* ── Font families ──────────────────────────────────────────────────────────
+   --font-title    → Alegreya 400        (user-specified, headings)
+   --font-heading  → Barlow              (≈ Graublau Sans Pro, subheadings)
+   --font-body     → Sora               (≈ Sofia Pro, body & UI)
+   JetBrains Mono is prepended to every stack — browser uses it for digits,
+   falls through to the named font for all letters.
+   ──────────────────────────────────────────────────────────────────────────── */
 :root {
-  --font-title:   'Nunito', system-ui, sans-serif;
-  --font-heading: 'Barlow', system-ui, sans-serif;
-  --font-body:    'Sora',   system-ui, sans-serif;
+  --font-title:   'JetBrains Mono', 'Alegreya', Georgia, serif;
+  --font-heading: 'JetBrains Mono', 'Barlow', system-ui, sans-serif;
+  --font-body:    'JetBrains Mono', 'Sora',   system-ui, sans-serif;
+  --font-numbers: 'JetBrains Mono', monospace;
 }
 
 /* ── Light theme ─────────────────────────────── */
