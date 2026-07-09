@@ -85,7 +85,7 @@ export function YearlyTrendChart({ data, loading }) {
           <ResponsiveContainer width="100%" height="100%">
             <AreaChart
               data={data}
-              margin={{ top: 8, right: 16, left: -18, bottom: 0 }}
+              margin={{ top: 8, right: 16, left: -8, bottom: 0 }}
             >
               {/* Gradient definition */}
               <defs>

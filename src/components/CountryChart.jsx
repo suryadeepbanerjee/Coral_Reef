@@ -22,10 +22,10 @@ export function CountryChart({ data, loading }) {
       <h3 className="font-semibold mb-4" style={{ color: 'var(--tx1)' }}>🌍 Top 15 Countries by Bleaching %</h3>
       {loading ? <div className="w-full h-80 rounded animate-pulse" style={{ background: 'var(--d3)' }} /> : (
         <ResponsiveContainer width="100%" height="90%">
-          <BarChart data={data} layout="vertical" margin={{ top: 5, right: 45, left: -10, bottom: 5 }}>
+          <BarChart data={data} layout="vertical" margin={{ top: 5, right: 45, left: -15, bottom: 5 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="var(--gd)" horizontal={false} />
             <XAxis type="number" stroke="var(--ax)" tick={{ fill: 'var(--tl)', fontSize: 11 }} unit="%" />
-            <YAxis type="category" dataKey="country" stroke="var(--ax)" tick={{ fill: 'var(--tl)', fontSize: 10 }} width={95} />
+            <YAxis type="category" dataKey="country" stroke="var(--ax)" tick={{ fill: 'var(--tl)', fontSize: 10 }} width={75} />
             <Tooltip content={<TT />} cursor={{ fill: 'rgba(0,0,0,0.05)' }} />
             <Bar dataKey="avg_bleaching" radius={[0, 4, 4, 0]} barSize={18}>
               <LabelList dataKey="avg_bleaching" position="right" formatter={v => `${v}%`}

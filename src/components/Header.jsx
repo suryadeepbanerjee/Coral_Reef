@@ -178,7 +178,7 @@ export function Header({
             margin:        0,
             fontFamily:    'var(--font-title)',
             fontSize:      'clamp(18px, 2.8vw, 30px)',
-            fontWeight:    400,
+            fontWeight:    500,
             color:         'var(--tx1)',
             letterSpacing: '0px',
             lineHeight:    1.2,
