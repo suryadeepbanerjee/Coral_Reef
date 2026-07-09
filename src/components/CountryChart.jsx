@@ -45,7 +45,7 @@ export function CountryChart({ data, loading }) {
       <h3 className="font-semibold mb-4" style={{ color: 'var(--tx1)' }}>🌍 Top 15 Countries by Bleaching %</h3>
       {loading ? <div className="w-full h-80 rounded animate-pulse" style={{ background: 'var(--d3)' }} /> : (
         <ResponsiveContainer width="100%" height="90%">
-          <BarChart data={data} layout="vertical" margin={{ top: 5, right: 45, left: -15, bottom: 5 }}>
+          <BarChart data={data} layout="vertical" margin={{ top: 5, right: 45, left: 5, bottom: 5 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="var(--gd)" horizontal={false} />
             <XAxis type="number" stroke="var(--ax)" tick={{ fill: 'var(--tl)', fontSize: 11 }} unit="%" />
             <YAxis
