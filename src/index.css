@@ -1,0 +1,139 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Font families ───────────────────────────────
+   --font-title    → Plus Jakarta Sans  (≈ Pluto)
+   --font-heading  → DM Sans            (≈ Graublau Sans Pro)
+   --font-body     → Sofia Sans         (≈ Sofia Pro)
+   ─────────────────────────────────────────────── */
+:root {
+  --font-title:   'Plus Jakarta Sans', system-ui, sans-serif;
+  --font-heading: 'DM Sans', system-ui, sans-serif;
+  --font-body:    'Sofia Sans', system-ui, sans-serif;
+}
+
+/* ── Light theme ─────────────────────────────── */
+:root {
+  --d1:  #f0f4f8;
+  --d2:  #ffffff;
+  --d3:  #e2e8f0;
+  --bd:  #cbd5e1;
+  --tx1: #0f172a;        /* black text in light mode */
+  --tx2: #334155;
+  --ax:  #64748b;
+  --gd:  #64748b;        /* chart grid — clearly visible in light mode */
+  --tl:  #475569;        /* chart tick labels */
+}
+
+/* ── Dark theme ──────────────────────────────── */
+html.dark {
+  --d1:  #050f1e;
+  --d2:  #0a1628;
+  --d3:  #0d1f3c;
+  --bd:  #1e3a5f;
+  --tx1: #ffffff;        /* white text in dark mode */
+  --tx2: #94a3b8;
+  --ax:  #4a6fa5;
+  --gd:  #2a4a6b;        /* chart grid — visible but not harsh in dark */
+  --tl:  #94a3b8;
+}
+
+/* ── Base typography ─────────────────────────── */
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;   /* prevent any fixed element from causing horizontal scroll */
+}
+
+body {
+  background-color: var(--d1);
+  color: var(--tx1);
+  font-family: var(--font-body);
+  font-size: 17px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Dashboard title font */
+.font-title   { font-family: var(--font-title); }
+/* Section heading font */
+.font-heading { font-family: var(--font-heading); }
+
+/* Apply heading font to all h1–h3 that haven't been overridden */
+h1 { font-family: var(--font-title); }
+h2 { font-family: var(--font-heading); }
+h3 { font-family: var(--font-heading); }
+
+/* ── Leaflet ─────────────────────────────────── */
+.leaflet-container {
+  width: 100%;
+  height: 100%;
+  border-radius: 0.75rem;
+}
+
+/* ── Scrollbar ───────────────────────────────── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--d3); }
+::-webkit-scrollbar-thumb { background: var(--bd); border-radius: 3px; }
+
+/* ── Range slider ────────────────────────────── */
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  background: #00b4d8;
+  cursor: pointer;
+  border: 2px solid var(--d2);
+  box-shadow: 0 0 0 2px #00b4d8;
+}
+
+/* ── Chart grid — force visibility in both themes ── */
+.recharts-cartesian-grid-horizontal line,
+.recharts-cartesian-grid-vertical line {
+  stroke: var(--gd) !important;
+  stroke-opacity: 1 !important;
+}
+
+/* ── Recharts tick text ───────────────────────── */
+.recharts-cartesian-axis-tick-value {
+  fill: var(--tl) !important;
+}
+
+/* ── Live pulse dot ──────────────────────────── */
+@keyframes pulse-live {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.4; transform: scale(0.75); }
+}
+.live-pulse-dot {
+  animation: pulse-live 2s ease-in-out infinite;
+}
+
+/* ── Status bar responsive ───────────────────── */
+@media (max-width: 640px) {
+  .status-bar-center,
+  .status-bar-right {
+    display: none !important;
+  }
+}
+
+/* ── User location marker — sonar ping ───────── */
+@keyframes sonar-ping {
+  0%   { box-shadow: 0 0 0 0    rgba(0,180,216,0.6); }
+  70%  { box-shadow: 0 0 0 12px rgba(0,180,216,0); }
+  100% { box-shadow: 0 0 0 0    rgba(0,180,216,0); }
+}
+.user-location-marker path {
+  animation: sonar-ping 2s ease-out infinite;
+}
+
+/* ── Area chart gradient animation ──────────────
+   Smooth entry fade for the Subframe-style chart  */
+@keyframes chart-fade-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.chart-enter {
+  animation: chart-fade-in 0.6s cubic-bezier(0.16,1,0.3,1) forwards;
+}
