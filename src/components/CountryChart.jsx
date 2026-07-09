@@ -3,6 +3,29 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Cell, ResponsiveCo
 
 const getColor = p => p > 15 ? '#e74c3c' : p > 5 ? '#f39c12' : '#2ecc71';
 
+// Abbreviate known multi-word country names, then hard-truncate anything still > 13 chars
+const abbreviate = (name) => {
+  if (!name) return name;
+  // Known long names → readable short form
+  const MAP = {
+    'Commonwealth of the Northern Mariana Islands': 'N. Mariana Isl.',
+    'Northern Mariana Islands': 'N. Mariana Isl.',
+    'United States of America': 'USA',
+    'United States':            'USA',
+    'United Arab Emirates':     'UAE',
+    'United Kingdom':           'UK',
+    'Papua New Guinea':         'Papua N.G.',
+    'Solomon Islands':          'Solomon Isl.',
+    'Marshall Islands':         'Marshall Isl.',
+    'Virgin Islands':           'Virgin Isl.',
+    'Cayman Islands':           'Cayman Isl.',
+    'Cook Islands':             'Cook Isl.',
+  };
+  if (MAP[name]) return MAP[name];
+  // Fallback: truncate at 13 chars
+  return name.length > 13 ? name.slice(0, 12) + '\u2026' : name;
+};
+
 const TT = ({ active, payload }) => {
   if (!active || !payload?.length) return null;
   const d = payload[0].payload;
@@ -25,7 +48,14 @@ export function CountryChart({ data, loading }) {
           <BarChart data={data} layout="vertical" margin={{ top: 5, right: 45, left: -15, bottom: 5 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="var(--gd)" horizontal={false} />
             <XAxis type="number" stroke="var(--ax)" tick={{ fill: 'var(--tl)', fontSize: 11 }} unit="%" />
-            <YAxis type="category" dataKey="country" stroke="var(--ax)" tick={{ fill: 'var(--tl)', fontSize: 10 }} width={75} />
+            <YAxis
+              type="category"
+              dataKey="country"
+              stroke="var(--ax)"
+              tick={{ fill: 'var(--tl)', fontSize: 10 }}
+              width={82}
+              tickFormatter={abbreviate}
+            />
             <Tooltip content={<TT />} cursor={{ fill: 'rgba(0,0,0,0.05)' }} />
             <Bar dataKey="avg_bleaching" radius={[0, 4, 4, 0]} barSize={18}>
               <LabelList dataKey="avg_bleaching" position="right" formatter={v => `${v}%`}
