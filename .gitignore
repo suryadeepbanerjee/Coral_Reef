@@ -14,6 +14,7 @@ __pycache__/
 *.h5
 *.onnx
 backend/__pycache__/
+!backend/model_files/*.pkl
 # backend/model_files/*.pkl
 backend/model_files/*.h5
 backend/model_files/*.onnx
