@@ -233,7 +233,7 @@ export function FeedbackSection() {
   // ── Success state ────────────────────────────────────────────────────────
   if (done) {
     return (
-      <section style={{ padding: '48px 0 8px', display: 'flex', justifyContent: 'center' }}>
+      <section style={{ padding: '24px 0 24px', display: 'flex', justifyContent: 'center' }}>
         <div style={{
           display:       'flex',
           flexDirection: 'column',
@@ -263,7 +263,7 @@ export function FeedbackSection() {
 
   // ── Form ─────────────────────────────────────────────────────────────────
   return (
-    <section style={{ padding: '48px 0 8px' }}>
+    <section style={{ padding: '24px 0 24px' }}>
 
       {/* ── Section header ── */}
       <div style={{ textAlign: 'center', marginBottom: 32 }}>
