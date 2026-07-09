@@ -223,7 +223,8 @@ export function FeedbackSection() {
       setDone(true);
     } catch (err) {
       console.error('[Feedback]', err);
-      setError('Could not send feedback. Please try again in a moment.');
+      const detail = err?.message || err?.error_description || JSON.stringify(err);
+      setError(`Submission failed: ${detail}`);
     } finally {
       setSubmitting(false);
     }
