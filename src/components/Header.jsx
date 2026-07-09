@@ -12,9 +12,10 @@
  *   Row 4: Stats pills (wrap)
  *
  * Typography:
- *   Title    → Plus Jakarta Sans (--font-title, ≈ Pluto)
- *   Subtitle → DM Sans          (--font-heading, ≈ Graublau Sans Pro)
- *   Pills    → Sofia Sans       (--font-body, ≈ Sofia Pro)
+ *   Title    → Alegreya 400    (--font-title, user-specified)
+ *   Subtitle → Barlow          (--font-heading, ≈ Graublau Sans Pro)
+ *   Pills    → Sora            (--font-body, ≈ Sofia Pro)
+ *   Numbers  → JetBrains Mono  (auto via unicode-range @font-face)
  */
 
 import React from 'react';
@@ -177,9 +178,9 @@ export function Header({
             margin:        0,
             fontFamily:    'var(--font-title)',
             fontSize:      'clamp(18px, 2.8vw, 30px)',
-            fontWeight:    800,
+            fontWeight:    400,
             color:         'var(--tx1)',
-            letterSpacing: '-0.5px',
+            letterSpacing: '0px',
             lineHeight:    1.2,
           }}>
             Coral Reef Bleaching Prediction Dashboard
