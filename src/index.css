@@ -3,14 +3,14 @@
 @tailwind utilities;
 
 /* ── Font families ───────────────────────────────
-   --font-title    → Plus Jakarta Sans  (≈ Pluto)
-   --font-heading  → DM Sans            (≈ Graublau Sans Pro)
-   --font-body     → Sofia Sans         (≈ Sofia Pro)
+   --font-title    → Nunito    (≈ Pluto)
+   --font-heading  → Barlow    (≈ Graublau Sans Pro)
+   --font-body     → Sora      (≈ Sofia Pro)
    ─────────────────────────────────────────────── */
 :root {
-  --font-title:   'Plus Jakarta Sans', system-ui, sans-serif;
-  --font-heading: 'DM Sans', system-ui, sans-serif;
-  --font-body:    'Sofia Sans', system-ui, sans-serif;
+  --font-title:   'Nunito', system-ui, sans-serif;
+  --font-heading: 'Barlow', system-ui, sans-serif;
+  --font-body:    'Sora',   system-ui, sans-serif;
 }
 
 /* ── Light theme ─────────────────────────────── */
