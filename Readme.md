@@ -292,3 +292,4 @@ Built as a project exploring full-stack development, environmental data visualiz
 This project is intended for educational and research purposes.
 
 Please ensure that third-party datasets, APIs, and services are used in accordance with their respective licenses and terms of service.
+Thank You
