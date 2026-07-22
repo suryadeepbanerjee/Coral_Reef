@@ -1,4 +1,10 @@
 # ============================================================
+# Author       : Arya Ranjan
+# Role         : ML Model + Prediction Engine + Simulation
+# Modules      : model.py | predict.py | simulate.py
+# Description  : Random Forest + SMOTE coral bleaching predictor
+# Accuracy     : 84.95% | Trees: 200 | Features: 13
+# ============================================================
 # model.py — Coral Bleaching Prediction Model (FINAL)
 # Coral Reef Bleaching Prediction Dashboard
 # ============================================================
