@@ -9,8 +9,7 @@ import React from 'react';
 import {
   AreaChart, Area,
   XAxis, YAxis, CartesianGrid, Tooltip,
-  ReferenceLine, ResponsiveContainer, Defs,
-  linearGradient, stop,
+  ReferenceLine, ResponsiveContainer,
 } from 'recharts';
 
 const MAJOR_EVENTS = [1998, 2005, 2010, 2016];
